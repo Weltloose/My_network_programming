@@ -1,11 +1,18 @@
-#include "../unpv13e/lib/unp.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdlib.h>
 
 #define MSERV_PORT 9878
 #define MSERV_IP "172.26.67.159"
 #define TEXT_MAX_SIZE 100
+
+typedef struct sockaddr SA;
 
 void handle(int socket){
 	char temp[TEXT_MAX_SIZE];
@@ -26,7 +33,7 @@ int main(){
 	inet_pton(AF_INET, MSERV_IP, &server.sin_addr);
 	server.sin_port = htons(MSERV_PORT);
 	server.sin_family = AF_INET;
-	if(bind(sockfd_listen, (SA *)&server, sizeof(server)) < 0){
+	if(bind(sockfd_listen, (const SA *)&server, sizeof(server)) < 0){
 		fprintf(stderr, "Can't bind.\n");
 		exit(0);
 	}
